@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.toopher.openam.ToopherUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +19,7 @@ public class ApiResponseObject {
     }
 
     private Map<String, Object> jsonToMap(JSONObject json) throws JSONException{
+        ToopherUtil.debug_message("TT ApiResponseObject.jsonToMap");
     	Map<String,Object> result = new HashMap<String,Object>();
     	
     	for (Iterator<String> i = json.keys(); i.hasNext(); ) {

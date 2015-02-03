@@ -82,6 +82,7 @@ public class ToopherSecondFactor extends ToopherSecondFactorBase {
     }
 
     private int ajaxPollingResponse(boolean poll) throws JSONException, IOException {
+        debug_message("TT ToopherSecondFactor.ajaxPollingResponse");
         HttpServletResponse response = getHttpServletResponse();
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("poll", poll);
@@ -93,6 +94,7 @@ public class ToopherSecondFactor extends ToopherSecondFactorBase {
 
     @Override
     public int process(Callback[] callbacks, int state) throws LoginException {
+        debug_message("TT ToopherSecondFactor.process");
         try {
             HttpServletRequest request = getHttpServletRequest();
             boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
@@ -247,6 +249,7 @@ public class ToopherSecondFactor extends ToopherSecondFactorBase {
 
     @Override
     public Principal getPrincipal() {
+        debug_message("TT ToopherSecondFactor.getPrincipal");
         return new ToopherSecondFactorPrincipal(userName);
     }
 

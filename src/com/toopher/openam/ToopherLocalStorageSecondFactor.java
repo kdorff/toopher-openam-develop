@@ -149,6 +149,7 @@ public class ToopherLocalStorageSecondFactor extends AMLoginModule {
     // In this method we store service attributes and localized properties
     // for later use
     public void init(Subject subject, Map sharedState, Map options) {
+        debug_message("TT ToopherLocalStorageSecondFactor.init");
         if (isUseFirstPassEnabled()) {
             this.sharedState = sharedState;
         }
@@ -183,6 +184,7 @@ public class ToopherLocalStorageSecondFactor extends AMLoginModule {
     }
 
     private ToopherUserTerminal getToopherUserTerminal(ToopherUser user) throws ToopherDataStoreException{
+        debug_message("TT ToopherLocalStorageSecondFactor.getToopherUserTerminal");
         HttpServletRequest request = getHttpServletRequest();
         ToopherUserTerminal result = null;
         for (Cookie cookie : request.getCookies()){
@@ -205,15 +207,19 @@ public class ToopherLocalStorageSecondFactor extends AMLoginModule {
     
 
     private void clearStatusCookie() {
+        debug_message("TT ToopherLocalStorageSecondFactor.clearStatusCookie");
         getHttpServletResponse().addCookie(new Cookie("toopher_auth_status", "n/a"));
     }
+
     private void setStatusCookiePoll() {
+        debug_message("TT ToopherLocalStorageSecondFactor.setStatusCookiePoll");
         getHttpServletResponse().addCookie(new Cookie("toopher_auth_status", "poll"));
     }
 
     @Override
     public int process(Callback[] callbacks, int state) throws LoginException {
         try {
+            debug_message("TT ToopherLocalStorageSecondFactor.process");
             debug_message("====================================");
             debug_message("SampleAuthTwo::process state: " + state);
             USERNAME = (String) sharedState.get(getUserKey());
@@ -371,6 +377,7 @@ public class ToopherLocalStorageSecondFactor extends AMLoginModule {
 
     @Override
     public Principal getPrincipal() {
+        debug_message("TT ToopherLocalStorageSecondFactor.getPrincipal");
         return new ToopherSecondFactorPrincipal(USERNAME);
     }
 

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import com.toopher.openam.ToopherUtil;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 
@@ -52,7 +53,7 @@ public class ToopherAPI {
      *            The consumer secret for a requester (obtained from the developer portal)
      */
     public ToopherAPI(String consumerKey, String consumerSecret) {
-    	this(consumerKey, consumerSecret, (URI)null);
+        this(consumerKey, consumerSecret, (URI)null);
     }
    
     
@@ -132,6 +133,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered
      */
     public PairingStatus pair(String pairingPhrase, String userName) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.pair-1");
         return this.pair(pairingPhrase, userName, null);
     }
     
@@ -149,6 +151,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered
      */
     public PairingStatus pair(String pairingPhrase, String userName, Map<String, String> extras) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.pair-2");
         final String endpoint = "pairings/create";
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -173,6 +176,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered
      */
     public PairingStatus getPairingStatus(String pairingRequestId) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.getPairingStatus");
         final String endpoint = String.format("pairings/%s", pairingRequestId);
 
         JSONObject json = get(endpoint);
@@ -195,6 +199,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered
      */
     public AuthenticationStatus authenticate(String pairingId, String terminalName) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.authenticate-1");
         return authenticate(pairingId, terminalName, null, null);
     }
     
@@ -212,6 +217,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered
      */
     public AuthenticationStatus authenticate(String pairingId, String terminalName, String actionName) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.authenticate-2");
         return authenticate(pairingId, terminalName, actionName, null);
     }
 
@@ -232,6 +238,7 @@ public class ToopherAPI {
      */
     public AuthenticationStatus authenticate(String pairingId, String terminalName,
                                              String actionName, Map<String, String> extras) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.authenticate-3");
         final String endpoint = "authentication_requests/initiate";
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -267,6 +274,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered
      */
     public AuthenticationStatus authenticateByUserName(String userName, String terminalNameExtra, String actionName, Map<String, String> extras) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.authenticateByUserName");
         if (extras == null) {
             extras = new HashMap<String, String>();
         }
@@ -287,6 +295,7 @@ public class ToopherAPI {
      */
     public AuthenticationStatus getAuthenticationStatus(String authenticationRequestId)
             throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.getAuthenticationStatus");
         final String endpoint = String.format("authentication_requests/%s", authenticationRequestId);
 
         JSONObject json = get(endpoint);
@@ -298,6 +307,7 @@ public class ToopherAPI {
     }
 
     public AuthenticationStatus getAuthenticationStatusWithOTP(String authenticationRequestId,String OTP) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.getAuthenticationStatusWithOTP");
         final String endpoint = String.format("authentication_requests/%s/otp_auth", authenticationRequestId);
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("otp", OTP));
@@ -325,6 +335,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered, or the 
      */
     public void assignUserFriendlyNameToTerminal(String userName, String terminalName, String terminalNameExtra) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.assignUserFriendlyNameToTerminal");
         final String endpoint = "user_terminals/create";
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -346,6 +357,7 @@ public class ToopherAPI {
      *             Thrown when an exceptional condition is encountered, or the 
      */
     public void setToopherEnabledForUser(String userName, boolean toopherEnabled) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.setToopherEnabledForUser");
         final String searchEndpoint = "users";
         final String updateEndpoint = "users/%s";
 
@@ -384,6 +396,7 @@ public class ToopherAPI {
         return request(new HttpGet(), endpoint, null);
     }
     private <T> T get(String endpoint, List<NameValuePair> params, Map<String, String> extras) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.get");
         if (params == null) {
             params = new ArrayList<NameValuePair>();
         }
@@ -396,6 +409,7 @@ public class ToopherAPI {
     }
 
     private <T> T post(String endpoint, List<NameValuePair> params, Map<String, String> extras) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.post");
         HttpPost post = new HttpPost();
         if (extras != null && extras.size() > 0) {
         	for (Map.Entry<String, String> e : extras.entrySet()){
@@ -414,6 +428,7 @@ public class ToopherAPI {
     
     private <T> T request(HttpRequestBase httpRequest, String endpoint, List<NameValuePair> queryStringParameters) throws RequestError {
         try {
+            ToopherUtil.debug_message("TT ToopherAPI.request");
             URIBuilder uriBuilder = new URIBuilder().setScheme(this.uriScheme).setHost(this.uriHost)
     		    	.setPort(this.uriPort)
                     .setPath(this.uriBase + endpoint);
@@ -442,8 +457,11 @@ public class ToopherAPI {
 
         @Override
         public Object handleResponse(HttpResponse response) throws IOException, ClientProtocolException {
+            ToopherUtil.debug_message("TT ToopherAPI.jsonHandler");
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() >= 300) {
+                ToopherUtil.debug_message("TT Calling ToopherAPI.parseRequestError because status code >= 300 at " +
+                        statusLine.getStatusCode());
                 parseRequestError(statusLine, response);
             }
 
@@ -465,6 +483,7 @@ public class ToopherAPI {
     };
 
     private static void parseRequestError(StatusLine statusLine, HttpResponse response) throws RequestError {
+        ToopherUtil.debug_message("TT ToopherAPI.parseRequestError");
         HttpEntity errEntity = response.getEntity();
         String errBody;
         try {
@@ -479,6 +498,10 @@ public class ToopherAPI {
                 JSONObject errObj = (JSONObject) new JSONTokener(errBody).nextValue();
                 int toopherErrorCode = errObj.getInt("error_code");
                 String toopherErrorMessage = errObj.getString("error_message");
+
+                ToopherUtil.debug_message("TT ToopherAPI.parseRequestError toopherErrorCode=" + toopherErrorCode);
+                ToopherUtil.debug_message("TT ToopherAPI.parseRequestError toopherErrorMessage=" + toopherErrorMessage);
+
                 switch (toopherErrorCode) {
                     case ToopherUserDisabledError.ERROR_CODE:
                         throw new ToopherUserDisabledError(toopherErrorMessage);
@@ -492,6 +515,7 @@ public class ToopherAPI {
                 }
 
             } catch (JSONException _jex) {
+                ToopherUtil.debug_message("TT ToopherAPI.parseRequestError JSONException _jex.message=" + _jex.getMessage());
                 // extended error information was supplied as non-JSON body text
                 throw new RequestError(errBody, new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase()));
             }

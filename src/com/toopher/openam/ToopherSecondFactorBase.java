@@ -70,6 +70,7 @@ public abstract class ToopherSecondFactorBase extends AMLoginModule {
     // In this method we store service attributes and localized properties
     // for later use
     public void init(Subject subject, Map sharedState, Map options) {
+        debug_message("TT ToopherSecondFactorBase.init");
         if (isUseFirstPassEnabled()) {
             this.sharedState = sharedState;
         }
@@ -109,6 +110,7 @@ public abstract class ToopherSecondFactorBase extends AMLoginModule {
     }
 
     private String getTerminalIdentifier() {
+        debug_message("TT ToopherSecondFactorBase.getTerminalIdentifier");
         HttpServletRequest request = getHttpServletRequest();
         for (Cookie cookie : request.getCookies()) {
             if(cookie.getName().equals(TERMINAL_ID_COOKIE_NAME)) {
@@ -130,17 +132,23 @@ public abstract class ToopherSecondFactorBase extends AMLoginModule {
 
 
     protected void clearStatusCookie() {
+        debug_message("TT ToopherSecondFactorBase.clearStatusCookie");
         getHttpServletResponse().addCookie(new Cookie("toopher_auth_status", "n/a"));
     }
+
     protected void setStatusCookiePoll() {
+        debug_message("TT ToopherSecondFactorBase.setStatusCookiePoll");
         this.setStatusCookie("poll");
     }
+
     protected void setStatusCookie(String status) {
+        debug_message("TT ToopherSecondFactorBase.setStatusCookie");
         getHttpServletResponse().addCookie(new Cookie("toopher_auth_status", status));
     }
 
     @Override
     public Principal getPrincipal() {
+        debug_message("TT ToopherSecondFactorBase.getPrincipal");
         return new ToopherSecondFactorPrincipal(userName);
     }
 

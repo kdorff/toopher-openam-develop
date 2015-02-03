@@ -27,6 +27,7 @@ package com.toopher.openam;
 
 import java.io.Serializable;
 import java.security.Principal;
+import com.sun.identity.shared.debug.Debug;
 
 /**
 *
@@ -36,7 +37,7 @@ public class ToopherSecondFactorPrincipal implements Principal, Serializable {
     private String name;
     private final static String CLASSNAME = "ToopherSecondFactorPrincipal";
     private final static String COLON = " : ";
-    
+
     public ToopherSecondFactorPrincipal(String name) {
         if (name == null) {
             throw new NullPointerException("illegal null input");
@@ -53,6 +54,7 @@ public class ToopherSecondFactorPrincipal implements Principal, Serializable {
     * @return the LDAP username for this &lt;code&gt; ToopherSecondFactorPrincipal &lt;/code&gt;
     */
     public String getName() {
+        ToopherUtil.debug_message("TT ToopherSecondFactorPrincipal.getName");
         return name;
     }
     
@@ -65,6 +67,7 @@ public class ToopherSecondFactorPrincipal implements Principal, Serializable {
     */
     @Override
     public String toString() {
+        ToopherUtil.debug_message("TT ToopherSecondFactorPrincipal.toString");
         return new StringBuilder().append(CLASSNAME).append(COLON).append(name).toString();
     }
     
@@ -84,6 +87,7 @@ public class ToopherSecondFactorPrincipal implements Principal, Serializable {
     */
     @Override
     public boolean equals(Object o) {
+        ToopherUtil.debug_message("TT ToopherSecondFactorPrincipal.equals");
         if (o == null) {
             return false;
         }
@@ -112,6 +116,7 @@ public class ToopherSecondFactorPrincipal implements Principal, Serializable {
     */
     @Override
     public int hashCode() {
+        ToopherUtil.debug_message("TT ToopherSecondFactorPrincipal.equals");
         return name.hashCode();
     }
 }

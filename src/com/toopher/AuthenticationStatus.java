@@ -1,5 +1,6 @@
 package com.toopher;
 
+import com.toopher.openam.ToopherUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class AuthenticationStatus extends ApiResponseObject {
 
     @Override
     public String toString() {
+        ToopherUtil.debug_message("TT AuthenticationStatus.toString");
         return String.format("[AuthenticationStatus: id=%s; pending=%b; granted=%b; automated=%b; reason=%s; terminalId=%s; terminalName=%s]",
                              id, pending, granted, automated, reason, terminalId, terminalName);
     }

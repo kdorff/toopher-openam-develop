@@ -1,6 +1,8 @@
 package com.toopher;
 
 import java.io.IOException;
+
+import com.toopher.openam.ToopherUtil;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
@@ -23,6 +25,7 @@ public class RequestError extends ClientProtocolException {
     }
 
     private static String getSpecificExceptionMessage(Class c) {
+        ToopherUtil.debug_message("TT RequestError.getSpecificExceptionMessage");
         if (ClientProtocolException.class.isAssignableFrom(c)) {
             return "Http protocol error";
         } else if (IOException.class.isAssignableFrom(c)) {

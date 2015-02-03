@@ -1,5 +1,6 @@
 package com.toopher;
 
+import com.toopher.openam.ToopherUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +31,7 @@ public class PairingStatus extends ApiResponseObject {
 
     @Override
     public String toString() {
+        ToopherUtil.debug_message("TT PairingStatus.toString");
         return String.format("[PairingStatus: id=%s; userId=%s; userName=%s, enabled=%b]", id,
                              userId, userName, enabled);
     }
